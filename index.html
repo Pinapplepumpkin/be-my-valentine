@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine? ❤️</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: url('https://drive.google.com/thumbnail?id=1JG4tVbzaHIMB6B1OQtxeCy6QewTr09iQ&sz=w1920') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            overflow: hidden;
+        }
+
+        /* Container is now TRANSPARENT */
+        .glass-box {
+            background: transparent; 
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        /* Added heavy text shadow so white text is visible over your photo */
+        h1 { 
+            color: white; 
+            font-size: 3rem; 
+            margin-bottom: 20px; 
+            text-shadow: 2px 2px 15px rgba(0,0,0,0.8), 0 0 10px #ff4081; 
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        #yesBtn { background-color: #43a047; color: white; padding: 15px 30px; font-size: 20px; }
+        #noBtn { background-color: #f44336; color: white; padding: 15px 30px; font-size: 20px; }
+        
+        #music-note {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            font-size: 12px;
+            color: white;
+            background: rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="youtube-audio"></div>
+
+    <div class="glass-box" id="container">
+        <h1 id="question">Will you be my Valentine? ❤️</h1>
+        <div class="btn-group">
+            <button id="yesBtn">Yes</button>
+            <button id="noBtn">No</button>
+        </div>
+    </div>
+
+    <div id="music-note">🎵 Music will play on first click...</div>
+
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const container = document.getElementById('container');
+        const audioContainer = document.getElementById('youtube-audio');
+
+        let noCount = 0;
+        let musicStarted = false;
+
+        const guiltTrip = [
+            "Are you sure?",
+            "Please? 🥺",
+            "Why breaking my heart? 💔",
+            "Pretty please?",
+            "Aww come on...",
+            "Think about it again!",
+            "I'm gonna cry... 😭",
+            "You're being mean! Click Yes!"
+        ];
+
+        // Function to start music (Bypasses Chrome/Brave autoplay block)
+        function startMusic() {
+            if (!musicStarted) {
+                audioContainer.innerHTML = `<iframe width="0" height="0" src="https://www.youtube.com/embed/Qw4KT7h32s8?autoplay=1&loop=1&playlist=Qw4KT7h32s8" frameborder="0" allow="autoplay"></iframe>`;
+                document.getElementById('music-note').innerText = "🎵 Sweater Weather (Sped Up)";
+                musicStarted = true;
+            }
+        }
+
+        noBtn.addEventListener('click', () => {
+            startMusic();
+            noCount++;
+            
+            noBtn.innerText = guiltTrip[Math.min(noCount - 1, guiltTrip.length - 1)];
+            let newNoSize = Math.max(8, 20 - (noCount * 2));
+            noBtn.style.fontSize = newNoSize + 'px';
+            noBtn.style.padding = (newNoSize/2) + "px " + (newNoSize) + "px";
+            
+            let newYesSize = 20 + (noCount * 35);
+            yesBtn.style.fontSize = newYesSize + 'px';
+            yesBtn.style.padding = (newYesSize/2) + "px " + (newYesSize) + "px";
+
+            if(noCount > 4) {
+                container.style.height = "90vh";
+                container.style.display = "flex";
+                container.style.flexDirection = "column";
+                container.style.justifyContent = "center";
+            }
+        });
+
+        yesBtn.addEventListener('click', () => {
+            startMusic();
+            container.innerHTML = `
+                <h1 style="font-size: 4rem;">YAY! ❤️🌹</h1>
+                <p style="font-size: 1.5rem; color: white; text-shadow: 2px 2px 10px black;">The best decision you've ever made!</p>
+                <div style="font-size: 80px;">🥰💍✨</div>
+            `;
+        });
+    </script>
+</body>
+</html>
